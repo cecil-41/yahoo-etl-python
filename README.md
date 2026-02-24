@@ -92,7 +92,7 @@ yahoo-etl-python/
 **Option 1: Send to Webhook (Recommended)**
 
 ```powershell
-python src/main.py --webhook-url "https://eojxsju5ujf2v4p.m.pipedream.net"
+python src/main.py --webhook-url "https://your-webhook-url-here"
 ```
 
 **Option 2: Save to Local File (No webhook needed)**
