@@ -1,0 +1,14 @@
+# Yahoo Finance ETL Pipeline Configuration
+
+# Webhook endpoint for posting transformed data
+# Get your unique URL from https://webhook.site/
+webhook_url: "https://webhook.site/your-unique-url"
+
+# Stock ticker to extract
+ticker: "AAPL"
+
+# Minimum trading volume filter (records below this are excluded)
+min_volume: 1000000
+
+# Logging configuration
+log_level: "INFO"
