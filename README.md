@@ -56,7 +56,7 @@ yahoo-etl-python/
 
 1. **Clone the repository**
    ```powershell
-   git clone <repository-url>
+   git clone https://github.com/cecil-41/yahoo-etl-python.git
    cd yahoo-etl-python
    ```
 
