@@ -1,0 +1,38 @@
+{
+  "data": [
+    {
+      "Year": 2022,
+      "Avg_Close": 263.09,
+      "Total_Volume": 21821019600,
+      "Trading_Days": 251
+    },
+    {
+      "Year": 2023,
+      "Avg_Close": 217.48,
+      "Total_Volume": 34337910000,
+      "Trading_Days": 250
+    },
+    {
+      "Year": 2024,
+      "Avg_Close": 230.61,
+      "Total_Volume": 23899546500,
+      "Trading_Days": 252
+    },
+    {
+      "Year": 2025,
+      "Avg_Close": 356.6,
+      "Total_Volume": 24375062000,
+      "Trading_Days": 249
+    }
+  ],
+  "metadata": {
+    "source_file": "C:\\DevOps\\yahoo-etl-python\\data\\raw\\TSLA_20260228_063958.csv",
+    "output_file": "C:\\DevOps\\yahoo-etl-python\\data\\processed\\processed_TSLA_20260228_063958.csv",
+    "total_years": 4,
+    "date_range": {
+      "start": "2022-01-03",
+      "end": "2025-12-30"
+    },
+    "records_processed": 1002
+  }
+}

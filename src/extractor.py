@@ -29,8 +29,8 @@ class YahooFinanceExtractor:
     def download_stock_data(
         self, 
         ticker: str, 
-        start_date: str = "2021-01-01",
-        end_date: str = "2024-02-20"
+        start_date: str = "2022-01-01",
+        end_date: str = "2025-12-31"
     ) -> Path:
         """
         Download historical stock data from Yahoo Finance using yfinance library.
@@ -71,37 +71,3 @@ class YahooFinanceExtractor:
         except Exception as e:
             logger.error(f"Failed to download data: {e}")
             raise
-    
-    def extract(self, ticker: str = "AAPL") -> Path:
-        """
-        Extract stock data for a given ticker.
-        
-        Args:
-            ticker: Stock ticker symbol
-            
-        Returns:
-            Path to the downloaded CSV file
-        """
-        # Default period: Jan 1, 2021 to Feb 20, 2024
-        period1 = 1609459200  # 2021-01-01
-        period2 = 1708387200  # 2024-02-20
-        
-        return self.download_stock_data(ticker, period1, period2)
-
-
-if __name__ == "__main__":
-    def extract(self, ticker: str = "AAPL") -> Path:
-        """
-        Extract stock data for a given ticker.
-        
-        Args:
-            ticker: Stock ticker symbol
-            
-        Returns:
-            Path to the downloaded CSV file
-        """
-        # Default period: Jan 1, 2021 to Feb 20, 2024
-        start_date = "2021-01-01"
-        end_date = "2024-02-20"
-        
-        return self.download_stock_data(ticker, start_date, end_date)

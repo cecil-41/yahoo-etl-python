@@ -1,11 +1,23 @@
 # Yahoo Finance ETL Pipeline Configuration
 
 # Webhook endpoint for posting transformed data
-# Get your unique URL from https://webhook.site/
-webhook_url: "https://webhook.site/your-unique-url"
+# Get your unique URL from https://webhook.site/ or https://pipedream.com/
+webhook_url: "https://eojxsju5ujf2v4p.m.pipedream.net"
 
 # Stock ticker to extract
+# AAPL = Apple Inc.
+# MSFT = Microsoft
+# GOOGL = Google (Alphabet)
+# TSLA = Tesla
+# AMZN = Amazon
+# META = Meta (Facebook)
+# NFLX = Netflix
 ticker: "AAPL"
+
+# Date range for data extraction (YYYY-MM-DD format)
+# Command-line arguments (--start-date, --end-date) will override these
+start_date: "2022-01-01"
+end_date: "2025-12-31"
 
 # Minimum trading volume filter (records below this are excluded)
 min_volume: 1000000

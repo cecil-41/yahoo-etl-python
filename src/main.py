@@ -74,7 +74,9 @@ def run_etl_pipeline(
     ticker: str,
     webhook_url: str,
     min_volume: int = 1_000_000,
-    use_file_output: bool = False
+    use_file_output: bool = False,
+    start_date: str = "2022-01-01",
+    end_date: str = "2025-12-31"
 ) -> bool:
     """
     Execute the complete ETL pipeline.
@@ -84,6 +86,8 @@ def run_etl_pipeline(
         webhook_url: Webhook endpoint URL
         min_volume: Minimum trading volume filter
         use_file_output: If True, save to JSON file instead of webhook
+        start_date: Start date for data extraction (YYYY-MM-DD)
+        end_date: End date for data extraction (YYYY-MM-DD)
         
     Returns:
         True if pipeline succeeds, False otherwise
@@ -100,15 +104,16 @@ def run_etl_pipeline(
     try:
         # EXTRACT
         logger.info("STEP 1: EXTRACT")
+        logger.info(f"Date Range: {start_date} to {end_date}")
         extractor = YahooFinanceExtractor()
-        raw_data_path = extractor.extract(ticker)
-        logger.info(f"✓ Extract completed: {raw_data_path}")
+        raw_data_path = extractor.download_stock_data(ticker, start_date, end_date)
+        logger.info(f"[SUCCESS] Extract completed: {raw_data_path}")
         
         # TRANSFORM
         logger.info("\nSTEP 2: TRANSFORM")
         transformer = StockDataTransformer()
         transformed_data = transformer.transform(raw_data_path)
-        logger.info(f"✓ Transform completed: {len(transformed_data['data'])} years processed")
+        logger.info(f"[SUCCESS] Transform completed: {len(transformed_data['data'])} years processed")
         
         # Display summary
         logger.info("\nTransformed Data Summary:")
@@ -123,9 +128,9 @@ def run_etl_pipeline(
         success = loader.load(transformed_data, use_file=use_file_output)
         
         if success:
-            logger.info("✓ Load completed successfully")
+            logger.info("[SUCCESS] Load completed successfully")
         else:
-            logger.error("✗ Load failed")
+            logger.error("[FAILED] Load failed")
             return False
         
         logger.info("=" * 80)
@@ -179,6 +184,18 @@ def main():
         action='store_true',
         help='Save output to JSON file instead of webhook (useful for corporate networks)'
     )
+    parser.add_argument(
+        '--start-date',
+        type=str,
+        default='2022-01-01',
+        help='Start date for data extraction in YYYY-MM-DD format (default: 2022-01-01)'
+    )
+    parser.add_argument(
+        '--end-date',
+        type=str,
+        default='2025-12-31',
+        help='End date for data extraction in YYYY-MM-DD format (default: 2025-12-31)'
+    )
     
     args = parser.parse_args()
     
@@ -188,18 +205,47 @@ def main():
     # Load configuration
     config = load_config(args.config)
     
+    # Get ticker - prompt user if not provided via command-line or config
+    if args.ticker and args.ticker != 'AAPL':
+        ticker = args.ticker
+    elif config.get('ticker') and config.get('ticker') != 'AAPL':
+        ticker = config.get('ticker')
+    else:
+        # Interactive prompt with examples
+        print("\nStock Ticker Selection")
+        print("Examples: TSLA (Tesla), GOOGL (Google), MSFT (Microsoft), AMZN (Amazon)")
+        user_input = input("Enter stock ticker symbol (press Enter for AAPL): ").strip().upper()
+        ticker = user_input if user_input else 'AAPL'
+    
     # Command-line arguments override config
-    ticker = args.ticker or config.get('ticker', 'AAPL')
     webhook_url = args.webhook_url or config.get('webhook_url')
     min_volume = args.min_volume or config.get('min_volume', 1_000_000)
     use_file_output = args.use_file
+    
+    # Dates: Command-line args override config.yaml, which overrides argparse defaults
+    if args.start_date != '2022-01-01':
+        start_date = args.start_date
+    else:
+        start_date = config.get('start_date', '2022-01-01')
+    
+    if args.end_date != '2025-12-31':
+        end_date = args.end_date
+    else:
+        end_date = config.get('end_date', '2025-12-31')
     
     if not webhook_url and not use_file_output:
         logger.error("Webhook URL not provided. Use --webhook-url or --use-file flag")
         return 1
     
     # Run ETL pipeline
-    success = run_etl_pipeline(ticker, webhook_url or "", min_volume, use_file_output)
+    success = run_etl_pipeline(
+        ticker, 
+        webhook_url, 
+        min_volume, 
+        use_file_output,
+        start_date,
+        end_date
+    )
     
     return 0 if success else 1
 

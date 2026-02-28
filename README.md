@@ -12,6 +12,8 @@ This ETL pipeline:
 ## 🎯 Features
 
 - ✅ Modular architecture with separate Extract, Transform, and Load components
+- ✅ Interactive ticker input prompts with examples
+- ✅ Flexible date range configuration (CLI > config.yaml > defaults)
 - ✅ Robust error handling and comprehensive logging
 - ✅ Missing value handling with forward-fill strategy
 - ✅ Volume-based filtering using list comprehension
@@ -89,52 +91,56 @@ yahoo-etl-python/
 
 ### Basic Usage
 
-**Option 1: Send to Webhook (Recommended)**
+**Option 1: Interactive Mode (Simplest)**
 
 ```powershell
-python src/main.py --webhook-url "https://your-webhook-url-here"
+python src/main.py
 ```
 
-**Option 2: Save to Local File (No webhook needed)**
+The pipeline will prompt you to enter a stock ticker symbol (e.g., AAPL, MSFT, GOOGL) and use settings from `config.yaml`.
+
+**Option 2: With Command-Line Arguments**
 
 ```powershell
-python src/main.py --use-file
-```
+# Run with specific ticker
+python src/main.py --ticker MSFT
 
-This saves the output to `data/processed/output.json` instead of posting to a webhook.
+# Save to file instead of webhook
+python src/main.py --ticker TSLA --use-file
+```
 
 ### Advanced Options
 
 ```powershell
-# Specify a different stock ticker
-python src/main.py --ticker MSFT --webhook-url "https://your-webhook-url"
+# Run with default ticker (AAPL from config.yaml) - uses interactive prompt
+python src/main.py
 
-# Change minimum volume filter
-python src/main.py --min-volume 5000000 --webhook-url "https://your-webhook-url"
+# Run with different ticker (MSFT)
+python src/main.py --ticker MSFT
 
-# Set logging level
-python src/main.py --log-level DEBUG --webhook-url "https://your-webhook-url"
+# Run with ticker and save to file instead of webhook
+python src/main.py --ticker TSLA --use-file
 
-# Use custom config file
-python src/main.py --config config/custom_config.yaml
+# Run with custom date range
+python src/main.py --ticker GOOGL --start-date 2023-01-01 --end-date 2024-12-31
 
-# Save to file instead of webhook (useful for corporate networks)
-python src/main.py --use-file
+# Run with webhook URL override
+python src/main.py --ticker AMZN --webhook-url https://eojxsju5ujf2v4p.m.pipedream.net
 
-# Combine multiple options
-python src/main.py --ticker GOOGL --min-volume 2000000 --use-file
+# Run with all options
+python src/main.py --ticker NVDA --start-date 2022-01-01 --end-date 2024-12-31 --webhook-url https://eojxsju5ujf2v4p.m.pipedream.net
 ```
 
 ### Command-Line Arguments
 
 | Argument | Description | Default |
 |----------|-------------|---------|
-| `--ticker` | Stock ticker symbol | AAPL |
+| `--ticker` | Stock ticker symbol | Interactive prompt or config.yaml |
+| `--start-date` | Start date for data extraction (YYYY-MM-DD) | From config.yaml or 2022-01-01 |
+| `--end-date` | End date for data extraction (YYYY-MM-DD) | From config.yaml or 2025-12-31 |
 | `--webhook-url` | Webhook endpoint URL | From config.yaml |
 | `--use-file` | Save to JSON file instead of webhook | False |
-| `--config` | Path to config file | config/config.yaml |
 | `--log-level` | Logging level (DEBUG/INFO/WARNING/ERROR) | INFO |
-| `--min-volume` | Minimum trading volume filter | 1,000,000 |
 
 ### Example Output
 
@@ -186,10 +192,14 @@ The webhook received all yearly aggregated data including average closing prices
 
 ```yaml
 # Webhook endpoint for posting transformed data
-webhook_url: "https://webhook.site/your-unique-url"
+webhook_url: "https://eojxsju5ujf2v4p.m.pipedream.net"
 
-# Stock ticker to extract
+# Stock ticker to extract (examples: AAPL, MSFT, GOOGL, TSLA, AMZN)
 ticker: "AAPL"
+
+# Date range for data extraction
+start_date: "2022-01-01"
+end_date: "2025-12-31"
 
 # Minimum trading volume filter
 min_volume: 1000000

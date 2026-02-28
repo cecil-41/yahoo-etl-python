@@ -121,28 +121,3 @@ class DataLoader:
             logger.info("Falling back to file output")
             return self.save_to_file(transformed_data)
             return False
-
-
-if __name__ == "__main__":
-    # Configure logging for standalone testing
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
-    
-    # Test with sample data
-    loader = DataLoader("https://webhook.site/your-unique-url")
-    
-    sample_data = {
-        'data': [
-            {'Year': 2021, 'Avg_Close': 150.0, 'Total_Volume': 1000000000, 'Trading_Days': 252},
-            {'Year': 2022, 'Avg_Close': 155.0, 'Total_Volume': 1100000000, 'Trading_Days': 251}
-        ],
-        'metadata': {
-            'source_file': 'data/raw/AAPL_20240224_120000.csv',
-            'total_years': 2
-        }
-    }
-    
-    success = loader.load(sample_data)
-    print(f"Load successful: {success}")

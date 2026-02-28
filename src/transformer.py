@@ -193,17 +193,3 @@ class StockDataTransformer:
         }
         
         return result
-
-
-if __name__ == "__main__":
-    # Configure logging for standalone testing
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
-    
-    # Test with a sample file
-    transformer = StockDataTransformer()
-    # Note: Requires a CSV file to exist
-    # result = transformer.transform(Path("data/raw/AAPL_20240224_120000.csv"))
-    # print(result)
