@@ -205,17 +205,8 @@ def main():
     # Load configuration
     config = load_config(args.config)
     
-    # Get ticker - prompt user if not provided via command-line or config
-    if args.ticker and args.ticker != 'AAPL':
-        ticker = args.ticker
-    elif config.get('ticker') and config.get('ticker') != 'AAPL':
-        ticker = config.get('ticker')
-    else:
-        # Interactive prompt with examples
-        print("\nStock Ticker Selection")
-        print("Examples: TSLA (Tesla), GOOGL (Google), MSFT (Microsoft), AMZN (Amazon)")
-        user_input = input("Enter stock ticker symbol (press Enter for AAPL): ").strip().upper()
-        ticker = user_input if user_input else 'AAPL'
+    # Get ticker - CLI argument overrides config
+    ticker = args.ticker if args.ticker != 'AAPL' else config.get('ticker', 'AAPL')
     
     # Command-line arguments override config
     webhook_url = args.webhook_url or config.get('webhook_url')

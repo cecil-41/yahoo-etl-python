@@ -32,8 +32,8 @@ class TestTransformer:
         
         # Check that missing values are filled
         assert result['Close'].isna().sum() == 0
-        assert result['Close'].iloc[1] == 100  # Forward filled
-        assert result['Close'].iloc[2] == 100  # Forward filled
+        assert result['Close'].iloc[1] == 100  
+        assert result['Close'].iloc[2] == 100 
     
     def test_filter_by_volume(self):
         """Test volume filtering with list comprehension."""

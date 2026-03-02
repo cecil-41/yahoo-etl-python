@@ -212,6 +212,33 @@ log_level: "INFO"
 
 Alternatively, you can override configuration via command-line arguments (see Usage section).
 
+## ⏰ Automated Scheduling
+
+The pipeline includes a Python-based scheduler for automated execution.
+
+### Running the Scheduler
+
+Start the scheduler:
+
+```powershell
+python scheduler.py
+```
+
+The scheduler runs the ETL pipeline automatically:
+- **Daily at 4:30 PM** (16:30) - after market close
+- **Every Monday at 9:00 AM** - weekly summary
+
+The scheduler logs all activity to `logs/scheduler.log` and runs continuously until stopped with `Ctrl+C`.
+
+### Production Alternative
+
+For enterprise production deployments, **Apache Airflow** is recommended:
+- Industry-standard workflow orchestration
+- DAG-based pipeline management
+- Built-in monitoring, alerting, and retry logic
+- Web UI for visualization and control
+- Distributed task execution
+
 ## 🧪 Running Tests
 
 Execute the test suite:
